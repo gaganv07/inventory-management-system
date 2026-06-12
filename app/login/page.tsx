@@ -102,12 +102,12 @@ export default function LoginPage() {
           </div>
 
           {/* Demo credentials */}
-          <div className="mb-6 p-4 rounded-xl" style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)" }}>
-            <p className="text-xs font-medium mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>🔑 Demo Access — Click to fill:</p>
-            <div className="flex gap-2 flex-wrap">
+          <div style={{ display: "block", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: "12px", padding: "16px", marginBottom: "24px" }}>
+            <p style={{ display: "block", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.6)", marginBottom: "12px" }}>🔑 Demo Access — Click to fill:</p>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
               {demoCredentials.map((cred) => (
-                <button key={cred.label} onClick={() => fillDemo(cred)} className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                  style={{ background: `${cred.color}20`, border: `1px solid ${cred.color}40`, color: cred.color }}
+                <button key={cred.label} type="button" onClick={() => fillDemo(cred)} className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
+                  style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap", flexShrink: 0, background: `${cred.color}20`, border: `1px solid ${cred.color}40`, color: cred.color, cursor: "pointer" }}
                   onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = `${cred.color}30`; }}
                   onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = `${cred.color}20`; }}>
                   {cred.label}
@@ -116,10 +116,10 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} style={{ display: "block" }}>
             {/* Email */}
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: "rgba(255,255,255,0.7)" }}>Email Address</label>
+            <div style={{ display: "block", marginBottom: "20px" }}>
+              <label className="block text-sm font-medium mb-2" style={{ color: "rgba(255,255,255,0.7)", display: "block", marginBottom: "8px" }}>Email Address</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "rgba(255,255,255,0.3)" }} />
                 <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -132,8 +132,8 @@ export default function LoginPage() {
             </div>
 
             {/* Password */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
+            <div style={{ display: "block", marginBottom: "20px" }}>
+              <div className="flex items-center justify-between mb-2" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" }}>
                 <label className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>Password</label>
                 <Link href="/forgot-password" className="text-xs transition-colors" style={{ color: "#6366f1" }}>Forgot password?</Link>
               </div>
@@ -145,29 +145,31 @@ export default function LoginPage() {
                   style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
                   onFocus={(e) => { e.target.style.borderColor = "#6366f1"; e.target.style.boxShadow = "0 0 0 3px rgba(99,102,241,0.15)"; }}
                   onBlur={(e) => { e.target.style.borderColor = "rgba(255,255,255,0.1)"; e.target.style.boxShadow = "none"; }} />
-                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "rgba(255,255,255,0.3)" }}>
+                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2" style={{ color: "rgba(255,255,255,0.3)", background: "none", border: "none", cursor: "pointer" }}>
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
             {/* Remember me */}
-            <div className="flex items-center gap-3">
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
               <input type="checkbox" id="remember" checked={form.remember} onChange={(e) => setForm({ ...form, remember: e.target.checked })}
-                className="w-4 h-4 rounded" style={{ accentColor: "#6366f1" }} />
-              <label htmlFor="remember" className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>Remember me for 30 days</label>
+                className="w-4 h-4 rounded" style={{ accentColor: "#6366f1", cursor: "pointer" }} />
+              <label htmlFor="remember" className="text-sm" style={{ color: "rgba(255,255,255,0.6)", cursor: "pointer" }}>Remember me for 30 days</label>
             </div>
 
             {/* Error */}
             {error && (
-              <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-sm px-4 py-3 rounded-xl" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", color: "#fca5a5" }}>
-                {error}
-              </motion.div>
+              <div style={{ display: "block", marginBottom: "20px" }}>
+                <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-sm px-4 py-3 rounded-xl" style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", color: "#fca5a5" }}>
+                  {error}
+                </motion.div>
+              </div>
             )}
 
             {/* Submit */}
             <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all disabled:opacity-70"
-              style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", boxShadow: "0 8px 30px rgba(99,102,241,0.35)" }}>
+              style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", boxShadow: "0 8px 30px rgba(99,102,241,0.35)", cursor: "pointer" }}>
               {loading ? <><Loader2 size={18} className="animate-spin" /> Signing in...</> : "Sign In →"}
             </button>
           </form>

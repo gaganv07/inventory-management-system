@@ -43,9 +43,9 @@ export default function ForgotPasswordPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="block text-sm font-medium mb-2" style={{ color: "rgba(255,255,255,0.7)" }}>Email Address</label>
+              <form onSubmit={handleSubmit} style={{ display: "block" }}>
+                <div style={{ display: "block", marginBottom: "20px" }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: "rgba(255,255,255,0.7)", display: "block", marginBottom: "8px" }}>Email Address</label>
                   <div className="relative">
                     <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "rgba(255,255,255,0.3)" }} />
                     <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all disabled:opacity-70"
-                  style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", boxShadow: "0 8px 30px rgba(99,102,241,0.35)" }}>
+                  style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", boxShadow: "0 8px 30px rgba(99,102,241,0.35)", cursor: "pointer" }}>
                   {loading ? <><Loader2 size={18} className="animate-spin" /> Sending...</> : "Send Reset Link →"}
                 </button>
               </form>
