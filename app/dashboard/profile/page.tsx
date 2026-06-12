@@ -7,8 +7,8 @@ import { toast } from "sonner";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
-    name: "Admin User", email: "admin@industrialvisit.com", phone: "+91 98765 43210",
-    company: "industrialvisit Pvt. Ltd.", role: "ADMIN", bio: "System administrator managing the complete inventory platform.",
+    name: "Admin User", email: "admin@abcindustries.com", phone: "+91 98765 43210",
+    company: "ABC Industries Pvt. Ltd.", role: "ADMIN", bio: "System administrator managing the complete inventory platform.",
   });
   const [passwords, setPasswords] = useState({ current: "", newPass: "", confirm: "" });
   const [showPw, setShowPw] = useState({ current: false, new: false, confirm: false });

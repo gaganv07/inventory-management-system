@@ -6,15 +6,15 @@ import { QueryProvider } from "@/components/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: {
-    default: "industrialvisit — Industrial Inventory Management System",
-    template: "%s | industrialvisit",
+    default: "ABC Industries — Industrial Inventory Management System",
+    template: "%s | ABC Industries",
   },
   description:
     "Track stock, manage suppliers, monitor inventory movement, and make data-driven decisions from one secure cloud platform designed for modern industrial businesses.",
   keywords: ["inventory management", "industrial", "warehouse", "stock tracking", "ERP", "supply chain"],
-  authors: [{ name: "industrialvisit" }],
+  authors: [{ name: "ABC Industries" }],
   openGraph: {
-    title: "industrialvisit — Industrial Inventory Management",
+    title: "ABC Industries — Industrial Inventory Management",
     description: "Enterprise-grade inventory management for modern industries",
     type: "website",
   },

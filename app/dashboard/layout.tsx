@@ -95,7 +95,7 @@ function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: SidebarProp
                   <Factory size={17} color="white" />
                 </div>
                 <span className="font-bold text-sm" style={{ color: "hsl(var(--text-primary))" }}>
-                  industrial<span style={{ color: "#6366f1" }}>visit</span>
+                  ABC<span style={{ color: "#6366f1" }}>Industries</span>
                 </span>
               </motion.div>
             )}

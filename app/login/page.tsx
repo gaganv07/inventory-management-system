@@ -15,9 +15,9 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   const demoCredentials = [
-    { label: "Admin", email: "admin@industrialvisit.com", password: "Admin@123", color: "#6366f1" },
-    { label: "Manager", email: "manager@industrialvisit.com", password: "Manager@123", color: "#8b5cf6" },
-    { label: "Employee", email: "employee@industrialvisit.com", password: "Employee@123", color: "#22c55e" },
+    { label: "Admin", email: "admin@abcindustries.com", password: "Admin@123", color: "#6366f1" },
+    { label: "Manager", email: "manager@abcindustries.com", password: "Manager@123", color: "#8b5cf6" },
+    { label: "Employee", email: "employee@abcindustries.com", password: "Employee@123", color: "#22c55e" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -51,7 +51,7 @@ export default function LoginPage() {
           <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
             <Factory size={22} color="white" />
           </div>
-          <span className="font-bold text-white text-xl">industrial<span style={{ color: "#6366f1" }}>visit</span></span>
+          <span className="font-bold text-white text-xl">ABC<span style={{ color: "#6366f1" }}>Industries</span></span>
         </div>
 
         <div>
@@ -93,7 +93,7 @@ export default function LoginPage() {
             <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
               <Factory size={22} color="white" />
             </div>
-            <span className="font-bold text-white text-xl">industrial<span style={{ color: "#6366f1" }}>visit</span></span>
+            <span className="font-bold text-white text-xl">ABC<span style={{ color: "#6366f1" }}>Industries</span></span>
           </div>
 
           <div style={{ display: "block", marginBottom: "32px" }}>

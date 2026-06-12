@@ -1,219 +1,282 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role, ProductStatus, StockTransactionType, PurchaseOrderStatus, NotificationType } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import fs from "fs";
+import path from "path";
+
+// Manually load .env variables
+try {
+  const envPath = path.resolve(process.cwd(), ".env");
+  if (fs.existsSync(envPath)) {
+    const envConfig = fs.readFileSync(envPath, "utf-8");
+    envConfig.split("\n").forEach(line => {
+      const parts = line.split("=");
+      if (parts.length >= 2) {
+        const key = parts[0].trim();
+        const value = parts.slice(1).join("=").trim().replace(/^["']|["']$/g, "");
+        if (key && !process.env[key]) {
+          process.env[key] = value;
+        }
+      }
+    });
+  }
+} catch (err) {
+  console.warn("Could not load .env file manually:", err);
+}
+
+import {
+  mockUsers,
+  mockCategories,
+  mockSuppliers,
+  mockProducts,
+  mockPurchaseOrders,
+  mockTransactions,
+  mockNotifications,
+  mockAuditLogs
+} from "../lib/mock-data";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding database...");
+  console.log("🌱 Starting database seed...");
 
-  // Create categories
-  const categories = await Promise.all([
-    prisma.category.upsert({
-      where: { name: "Raw Materials" },
-      update: {},
-      create: { name: "Raw Materials", description: "Base materials used in manufacturing" },
-    }),
-    prisma.category.upsert({
-      where: { name: "Finished Goods" },
-      update: {},
-      create: { name: "Finished Goods", description: "Completed products ready for sale" },
-    }),
-    prisma.category.upsert({
-      where: { name: "Spare Parts" },
-      update: {},
-      create: { name: "Spare Parts", description: "Machine and equipment spare parts" },
-    }),
-    prisma.category.upsert({
-      where: { name: "Packaging" },
-      update: {},
-      create: { name: "Packaging", description: "Packaging materials and supplies" },
-    }),
-    prisma.category.upsert({
-      where: { name: "Tools & Equipment" },
-      update: {},
-      create: { name: "Tools & Equipment", description: "Tools used in production" },
-    }),
-  ]);
+  console.log("🗑️ Clearing existing data...");
+  await prisma.auditLog.deleteMany();
+  await prisma.notification.deleteMany();
+  await prisma.stockTransaction.deleteMany();
+  await prisma.purchaseOrderItem.deleteMany();
+  await prisma.purchaseOrder.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.supplier.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.user.deleteMany();
 
-  // Create suppliers
-  const suppliers = await Promise.all([
-    prisma.supplier.create({
-      data: {
-        companyName: "Tata Steel Ltd",
-        contactPerson: "Rajesh Kumar",
-        phone: "+91 98765 43210",
-        email: "rajesh@tatasteel.com",
-        gstNumber: "27AABCT3518Q1ZP",
-        address: "Mumbai, Maharashtra",
-        notes: "Primary steel supplier",
-      },
-    }),
-    prisma.supplier.create({
-      data: {
-        companyName: "Reliance Industries",
-        contactPerson: "Priya Sharma",
-        phone: "+91 87654 32109",
-        email: "priya@ril.com",
-        gstNumber: "27AAGCR5390K1ZS",
-        address: "Navi Mumbai, Maharashtra",
-        notes: "Chemical and polymer supplier",
-      },
-    }),
-    prisma.supplier.create({
-      data: {
-        companyName: "Mahindra Logistics",
-        contactPerson: "Amit Singh",
-        phone: "+91 76543 21098",
-        email: "amit@mahindra.com",
-        gstNumber: "27AABCM4598P1Z8",
-        address: "Pune, Maharashtra",
-        notes: "Packaging and logistics",
-      },
-    }),
-  ]);
-
-  // Create products
-  const products = await Promise.all([
-    prisma.product.create({
-      data: {
-        name: "Steel Rod 12mm",
-        sku: "STL-ROD-12MM",
-        barcode: "1234567890123",
-        categoryId: categories[0].id,
-        supplierId: suppliers[0].id,
-        purchasePrice: 850,
-        sellingPrice: 1020,
-        quantity: 500,
-        unit: "KG",
-        reorderLevel: 100,
-        description: "High-grade TMT steel rod, 12mm diameter",
-      },
-    }),
-    prisma.product.create({
-      data: {
-        name: "Industrial Bearings 6205",
-        sku: "BRG-6205",
-        barcode: "2345678901234",
-        categoryId: categories[2].id,
-        supplierId: suppliers[0].id,
-        purchasePrice: 145,
-        sellingPrice: 220,
-        quantity: 8,
-        unit: "PCS",
-        reorderLevel: 20,
-        description: "Deep groove ball bearing 6205-2RS",
-      },
-    }),
-    prisma.product.create({
-      data: {
-        name: "PVC Pipe 2 inch",
-        sku: "PVC-2IN",
-        barcode: "3456789012345",
-        categoryId: categories[0].id,
-        supplierId: suppliers[1].id,
-        purchasePrice: 320,
-        sellingPrice: 450,
-        quantity: 200,
-        unit: "MTR",
-        reorderLevel: 50,
-        description: "Schedule 40 PVC pressure pipe",
-      },
-    }),
-    prisma.product.create({
-      data: {
-        name: "Cardboard Box 12x10x8",
-        sku: "PKG-BOX-12",
-        barcode: "4567890123456",
-        categoryId: categories[3].id,
-        supplierId: suppliers[2].id,
-        purchasePrice: 25,
-        sellingPrice: 40,
-        quantity: 1200,
-        unit: "PCS",
-        reorderLevel: 200,
-        description: "5-ply corrugated cardboard box",
-      },
-    }),
-    prisma.product.create({
-      data: {
-        name: "Hydraulic Oil 46",
-        sku: "OIL-HYD-46",
-        barcode: "5678901234567",
-        categoryId: categories[0].id,
-        supplierId: suppliers[1].id,
-        purchasePrice: 480,
-        sellingPrice: 620,
-        quantity: 12,
-        unit: "LTR",
-        reorderLevel: 50,
-        description: "ISO VG 46 hydraulic oil, 205L drum",
-      },
-    }),
-    prisma.product.create({
-      data: {
-        name: "Safety Helmet ISI",
-        sku: "SFT-HELM-ISI",
-        barcode: "6789012345678",
-        categoryId: categories[4].id,
-        supplierId: suppliers[2].id,
-        purchasePrice: 180,
-        sellingPrice: 280,
-        quantity: 45,
-        unit: "PCS",
-        reorderLevel: 20,
-        description: "ISI marked HDPE safety helmet",
-      },
-    }),
-  ]);
-
-  // Create users
+  console.log("👥 Seeding Users (23)...");
   const hashedAdmin = await bcrypt.hash("Admin@123", 12);
   const hashedManager = await bcrypt.hash("Manager@123", 12);
   const hashedEmployee = await bcrypt.hash("Employee@123", 12);
 
-  await Promise.all([
-    prisma.user.upsert({
-      where: { email: "admin@industrialvisit.com" },
-      update: {},
-      create: {
-        name: "Admin User",
-        email: "admin@industrialvisit.com",
-        password: hashedAdmin,
-        role: "ADMIN",
-      },
-    }),
-    prisma.user.upsert({
-      where: { email: "manager@industrialvisit.com" },
-      update: {},
-      create: {
-        name: "Manager User",
-        email: "manager@industrialvisit.com",
-        password: hashedManager,
-        role: "MANAGER",
-      },
-    }),
-    prisma.user.upsert({
-      where: { email: "employee@industrialvisit.com" },
-      update: {},
-      create: {
-        name: "Employee User",
-        email: "employee@industrialvisit.com",
-        password: hashedEmployee,
-        role: "EMPLOYEE",
-      },
-    }),
-  ]);
+  await Promise.all(
+    mockUsers.map(user => {
+      let password = hashedEmployee;
+      if (user.role === "ADMIN") {
+        password = hashedAdmin;
+      } else if (user.role === "MANAGER") {
+        password = hashedManager;
+      }
+      return prisma.user.create({
+        data: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          password,
+          role: user.role as Role,
+          isActive: user.isActive,
+          createdAt: new Date(user.createdAt),
+          updatedAt: new Date(user.updatedAt)
+        }
+      });
+    })
+  );
+
+  console.log("📁 Seeding Categories (25)...");
+  await Promise.all(
+    mockCategories.map(cat =>
+      prisma.category.create({
+        data: {
+          id: cat.id,
+          name: cat.name,
+          description: cat.description,
+          isActive: cat.isActive,
+          createdAt: new Date(cat.createdAt),
+          updatedAt: new Date(cat.updatedAt)
+        }
+      })
+    )
+  );
+
+  console.log("🏢 Seeding Suppliers (40)...");
+  await Promise.all(
+    mockSuppliers.map(sup =>
+      prisma.supplier.create({
+        data: {
+          id: sup.id,
+          companyName: sup.companyName,
+          contactPerson: sup.contactPerson,
+          phone: sup.phone,
+          email: sup.email,
+          gstNumber: sup.gstNumber,
+          address: sup.address,
+          notes: sup.notes,
+          isActive: sup.isActive,
+          createdAt: new Date(sup.createdAt),
+          updatedAt: new Date(sup.updatedAt)
+        }
+      })
+    )
+  );
+
+  console.log("📦 Seeding Products (500)...");
+  // Seed in chunks to avoid overwhelming the database with 500 simultaneous connections
+  const productChunks = [];
+  const chunkSize = 50;
+  for (let i = 0; i < mockProducts.length; i += chunkSize) {
+    productChunks.push(mockProducts.slice(i, i + chunkSize));
+  }
+
+  for (const chunk of productChunks) {
+    await Promise.all(
+      chunk.map(prod =>
+        prisma.product.create({
+          data: {
+            id: prod.id,
+            name: prod.name,
+            sku: prod.sku,
+            barcode: prod.barcode,
+            categoryId: prod.categoryId,
+            supplierId: prod.supplierId,
+            purchasePrice: prod.purchasePrice,
+            sellingPrice: prod.sellingPrice,
+            quantity: prod.quantity,
+            unit: prod.unit,
+            reorderLevel: prod.reorderLevel,
+            description: prod.description,
+            image: prod.image,
+            status: prod.status as ProductStatus,
+            createdAt: new Date(prod.createdAt),
+            updatedAt: new Date(prod.updatedAt)
+          }
+        })
+      )
+    );
+  }
+
+  console.log("📋 Seeding Purchase Orders & Items (200)...");
+  // Seed purchase orders sequentially to prevent transaction issues
+  for (const po of mockPurchaseOrders) {
+    await prisma.purchaseOrder.create({
+      data: {
+        id: po.id,
+        poNumber: po.poNumber,
+        supplierId: po.supplierId,
+        status: po.status as PurchaseOrderStatus,
+        orderDate: new Date(po.orderDate),
+        expectedDate: po.expectedDate ? new Date(po.expectedDate) : null,
+        totalAmount: po.totalAmount,
+        notes: po.notes,
+        createdById: po.createdById,
+        createdAt: new Date(po.createdAt),
+        updatedAt: new Date(po.updatedAt)
+      }
+    });
+
+    if (po.items && po.items.length > 0) {
+      await Promise.all(
+        po.items.map(item =>
+          prisma.purchaseOrderItem.create({
+            data: {
+              id: item.id,
+              purchaseOrderId: item.purchaseOrderId,
+              productId: item.productId,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+              totalPrice: item.totalPrice
+            }
+          })
+        )
+      );
+    }
+  }
+
+  console.log("🔄 Seeding Stock Transactions (5050)...");
+  const transactionChunks = [];
+  for (let i = 0; i < mockTransactions.length; i += 250) {
+    transactionChunks.push(mockTransactions.slice(i, i + 250));
+  }
+
+  for (const chunk of transactionChunks) {
+    await Promise.all(
+      chunk.map(tx =>
+        prisma.stockTransaction.create({
+          data: {
+            id: tx.id,
+            type: tx.type as StockTransactionType,
+            productId: tx.productId,
+            quantity: tx.quantity,
+            price: tx.price,
+            invoiceNumber: tx.invoiceNumber,
+            supplierId: tx.supplierId,
+            customerId: tx.customerId,
+            remarks: tx.remarks,
+            date: new Date(tx.date),
+            createdById: tx.createdById,
+            createdAt: new Date(tx.createdAt)
+          }
+        })
+      )
+    );
+  }
+
+  console.log("🔔 Seeding Notifications (100)...");
+  const notifChunks = [];
+  for (let i = 0; i < mockNotifications.length; i += 50) {
+    notifChunks.push(mockNotifications.slice(i, i + 50));
+  }
+
+  for (const chunk of notifChunks) {
+    await Promise.all(
+      chunk.map(notif => {
+        let type: NotificationType = NotificationType.SYSTEM;
+        if (notif.type === "warning") type = NotificationType.LOW_STOCK;
+        else if (notif.type === "success") type = NotificationType.STOCK_IN;
+        else if (notif.type === "info") type = NotificationType.NEW_ORDER;
+
+        return prisma.notification.create({
+          data: {
+            id: notif.id,
+            type,
+            title: notif.title,
+            message: notif.message,
+            isRead: notif.isRead,
+            createdAt: new Date(notif.createdAt)
+          }
+        });
+      })
+    );
+  }
+
+  console.log("📜 Seeding Audit Logs (1000)...");
+  const auditChunks = [];
+  for (let i = 0; i < mockAuditLogs.length; i += 200) {
+    auditChunks.push(mockAuditLogs.slice(i, i + 200));
+  }
+
+  for (const chunk of auditChunks) {
+    await Promise.all(
+      chunk.map(log =>
+        prisma.auditLog.create({
+          data: {
+            id: log.id,
+            action: log.action,
+            entity: log.entity,
+            entityId: log.entityId,
+            ipAddress: log.ipAddress,
+            createdAt: new Date(log.createdAt)
+          }
+        })
+      )
+    );
+  }
 
   console.log("✅ Database seeded successfully!");
-  console.log("📧 Login credentials:");
-  console.log("   Admin:    admin@industrialvisit.com / Admin@123");
-  console.log("   Manager:  manager@industrialvisit.com / Manager@123");
-  console.log("   Employee: employee@industrialvisit.com / Employee@123");
+  console.log("📧 Demo account access:");
+  console.log("   Admin:    admin@abcindustries.com / Admin@123");
+  console.log("   Manager:  manager@abcindustries.com / Manager@123");
+  console.log("   Employee: employee@abcindustries.com / Employee@123");
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch(e => {
+    console.error("❌ Seeding failed:", e);
     process.exit(1);
   })
   .finally(async () => {

@@ -28,7 +28,7 @@ function Navbar() {
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
               <Factory size={18} color="white" />
             </div>
-            <span className="font-bold text-white text-lg tracking-tight">industrial<span style={{ color: "#6366f1" }}>visit</span></span>
+            <span className="font-bold text-white text-lg tracking-tight">ABC<span style={{ color: "#6366f1" }}>Industries</span></span>
           </div>
 
           {/* Desktop Nav */}
@@ -333,11 +333,11 @@ function WhyChooseUs() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{ background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", color: "#a5b4fc" }}>
-              Why industrialvisit
+              Why ABC Industries
             </div>
             <h2 className="text-4xl font-bold text-white mb-6">Built for Indian Industrial Businesses</h2>
             <p className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.5)" }}>
-              We understand the unique challenges of managing inventory in Indian manufacturing — from GST compliance to multi-location warehouses. industrialvisit was designed from the ground up for your needs.
+              We understand the unique challenges of managing inventory in Indian manufacturing — from GST compliance to multi-location warehouses. ABC Industries was designed from the ground up for your needs.
             </p>
             <div className="space-y-4">
               {["GST-compliant purchase orders", "Multi-unit support (KG, LTR, MTR, PCS, and more)", "Hindi + English interface ready", "Works with existing barcode scanners", "Export-ready for audits and compliance"].map((item, i) => (
@@ -370,7 +370,7 @@ function WhyChooseUs() {
 // Testimonials
 function Testimonials() {
   const testimonials = [
-    { name: "Arvind Mehta", company: "Mehta Steel Fabricators, Rajkot", rating: 5, text: "After 15 years of managing inventory on spreadsheets, industrialvisit transformed our operations. We reduced stock wastage by 40% in the first month.", avatar: "AM" },
+    { name: "Arvind Mehta", company: "Mehta Steel Fabricators, Rajkot", rating: 5, text: "After 15 years of managing inventory on spreadsheets, ABC Industries transformed our operations. We reduced stock wastage by 40% in the first month.", avatar: "AM" },
     { name: "Kavitha Raghunathan", company: "KR Industrial Supplies, Chennai", rating: 5, text: "The low stock alerts alone saved us from multiple production stoppages. The supplier management feature is exactly what we needed.", avatar: "KR" },
     { name: "Suresh Patel", company: "Patel Engineering Works, Ahmedabad", rating: 5, text: "Our accountant loves the GST-ready purchase orders. The reports are professional enough to show bank managers. Highly recommended!", avatar: "SP" },
   ];
@@ -417,7 +417,7 @@ function Testimonials() {
 function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
   const faqs = [
-    { q: "Do I need to install any software?", a: "No. industrialvisit is fully cloud-based. Access it from any browser — desktop, tablet, or mobile. No installation required." },
+    { q: "Do I need to install any software?", a: "No. ABC Industries is fully cloud-based. Access it from any browser — desktop, tablet, or mobile. No installation required." },
     { q: "Can I use it without a database server?", a: "The demo version works with mock data out of the box. For production use, you can connect to any PostgreSQL database — including free options like Supabase or Neon." },
     { q: "Is my data secure?", a: "Yes. All data is encrypted in transit and at rest. Role-based access control ensures employees only see what they're authorized to. Full audit logs track every action." },
     { q: "Can I import my existing Excel inventory?", a: "Absolutely. The system supports bulk CSV/Excel import for products, categories, and suppliers. Migration is quick and straightforward." },
@@ -538,13 +538,13 @@ function Footer() {
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
                 <Factory size={18} color="white" />
               </div>
-              <span className="font-bold text-white text-lg">industrial<span style={{ color: "#6366f1" }}>visit</span></span>
+              <span className="font-bold text-white text-lg">ABC<span style={{ color: "#6366f1" }}>Industries</span></span>
             </div>
             <p className="text-sm max-w-xs mb-6" style={{ color: "rgba(255,255,255,0.45)", lineHeight: "1.8" }}>
               Enterprise inventory management built for manufacturers, warehouses, distributors, and industrial businesses looking to modernize operations.
             </p>
             <div className="flex gap-3">
-              {["📧 contact@industrialvisit.com", "📞 +91 98765 43210"].map((item, i) => (
+              {["📧 contact@abcindustries.com", "📞 +91 98765 43210"].map((item, i) => (
                 <span key={i} className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>{item}</span>
               ))}
             </div>
@@ -573,7 +573,7 @@ function Footer() {
 
         <div className="border-t pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
           <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
-            © 2024 industrialvisit. All rights reserved. Built for Indian Industrial Businesses.
+            © 2024 ABC Industries. All rights reserved. Built for Indian Industrial Businesses.
           </p>
           <div className="flex gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs" style={{ background: "rgba(34,197,94,0.1)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.2)" }}>
