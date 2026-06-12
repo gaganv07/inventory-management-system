@@ -42,11 +42,11 @@ function Navbar() {
           </div>
 
           {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium px-4 py-2 rounded-lg transition-all" style={{ color: "rgba(255,255,255,0.8)", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+            <Link href="/login" className="text-sm font-medium px-4 py-2 rounded-lg transition-all whitespace-nowrap flex-shrink-0" style={{ color: "rgba(255,255,255,0.8)", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
               Sign In
             </Link>
-            <Link href="/dashboard" className="text-sm font-semibold px-4 py-2 rounded-lg transition-all" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white", boxShadow: "0 4px 15px rgba(99,102,241,0.4)" }}>
+            <Link href="/dashboard" className="text-sm font-semibold px-4 py-2 rounded-lg transition-all whitespace-nowrap flex-shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white", boxShadow: "0 4px 15px rgba(99,102,241,0.4)" }}>
               Live Demo →
             </Link>
           </div>
@@ -108,13 +108,13 @@ function Hero() {
               Track stock, manage suppliers, monitor inventory movement, and make data-driven decisions from one secure cloud platform.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <a href="#contact" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white", boxShadow: "0 8px 30px rgba(99,102,241,0.4)" }}
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 mb-12">
+              <a href="#contact" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all whitespace-nowrap flex-shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "white", boxShadow: "0 8px 30px rgba(99,102,241,0.4)" }}
                 onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 40px rgba(99,102,241,0.5)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 8px 30px rgba(99,102,241,0.4)"; }}>
                 Request Demo <ArrowRight size={18} />
               </a>
-              <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", color: "white" }}
+              <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-semibold transition-all whitespace-nowrap flex-shrink-0" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", color: "white" }}
                 onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}>
                 <LayoutDashboard size={18} /> View Live Dashboard
