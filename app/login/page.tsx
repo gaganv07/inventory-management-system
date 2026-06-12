@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Factory, Eye, EyeOff, Loader2, Lock, Mail, ShieldCheck, ArrowLeft } from "lucide-react";
+import { Factory, Eye, EyeOff, Loader2, Lock, Mail, ShieldCheck, ArrowLeft, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
 export default function LoginPage() {
@@ -15,10 +15,18 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   const demoCredentials = [
-    { label: "Admin", email: "admin@abcindustries.com", password: "Admin@123", color: "#6366f1" },
-    { label: "Manager", email: "manager@abcindustries.com", password: "Manager@123", color: "#8b5cf6" },
-    { label: "Employee", email: "employee@abcindustries.com", password: "Employee@123", color: "#22c55e" },
+    { label: "Admin", email: "admin@demo.com", password: "Admin@123", color: "#6366f1" },
+    { label: "Manager", email: "manager@demo.com", password: "Manager@123", color: "#8b5cf6" },
+    { label: "Employee", email: "employee@demo.com", password: "Employee@123", color: "#22c55e" },
   ];
+
+  const [copiedText, setCopiedText] = useState("");
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(text);
+    toast.success(`${label} copied to clipboard!`);
+    setTimeout(() => setCopiedText(""), 2000);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +59,7 @@ export default function LoginPage() {
           <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
             <Factory size={22} color="white" />
           </div>
-          <span className="font-bold text-white text-xl">ABC<span style={{ color: "#6366f1" }}>Industries</span></span>
+          <span className="font-bold text-white text-xl">Indus<span style={{ color: "#6366f1" }}>Track</span></span>
         </div>
 
         <div>
@@ -93,7 +101,7 @@ export default function LoginPage() {
             <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
               <Factory size={22} color="white" />
             </div>
-            <span className="font-bold text-white text-xl">ABC<span style={{ color: "#6366f1" }}>Industries</span></span>
+            <span className="font-bold text-white text-xl">Indus<span style={{ color: "#6366f1" }}>Track</span></span>
           </div>
 
           <div style={{ display: "block", marginBottom: "32px" }}>
@@ -102,16 +110,32 @@ export default function LoginPage() {
           </div>
 
           {/* Demo credentials (Spacing Protected) */}
-          <div style={{ display: "block", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.2)", borderRadius: "12px", padding: "16px", marginBottom: "32px" }}>
-            <p style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "rgba(255,255,255,0.6)", marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>🔑 Demo Access — Click to fill:</p>
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          <div style={{ display: "block", background: "rgba(99,102,241,0.06)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: "12px", padding: "16px", marginBottom: "32px" }}>
+            <p style={{ display: "block", fontSize: "12px", fontWeight: "600", color: "rgba(255,255,255,0.7)", marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.05em" }}>🔑 Try Live Demo (Click Role to Autofill):</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {demoCredentials.map((cred) => (
-                <button key={cred.label} type="button" onClick={() => fillDemo(cred)} className="px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-                  style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap", flexShrink: 0, background: `${cred.color}20`, border: `1px solid ${cred.color}40`, color: cred.color, cursor: "pointer" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = `${cred.color}30`; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = `${cred.color}20`; }}>
-                  {cred.label}
-                </button>
+                <div key={cred.label} className="p-2.5 rounded-lg transition-all" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <button type="button" onClick={() => fillDemo(cred)} className="px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wider transition-all"
+                      style={{ background: `${cred.color}15`, border: `1px solid ${cred.color}30`, color: cred.color, cursor: "pointer" }}>
+                      {cred.label} (Autofill)
+                    </button>
+                  </div>
+                  <div className="flex flex-col gap-1 text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>
+                    <div className="flex items-center justify-between">
+                      <span>Email: <span className="text-white font-mono">{cred.email}</span></span>
+                      <button type="button" onClick={() => handleCopy(cred.email, "Email")} className="text-gray-400 hover:text-white transition-colors p-1" style={{ background: "none", border: "none", cursor: "pointer" }}>
+                        {copiedText === cred.email ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Password: <span className="text-white font-mono">{cred.password}</span></span>
+                      <button type="button" onClick={() => handleCopy(cred.password, "Password")} className="text-gray-400 hover:text-white transition-colors p-1" style={{ background: "none", border: "none", cursor: "pointer" }}>
+                        {copiedText === cred.password ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>

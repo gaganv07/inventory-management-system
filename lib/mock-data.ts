@@ -46,7 +46,7 @@ const indianLastNames = [
 mockUsers.push({
   id: "u-sa-1",
   name: "Rahul Sharma",
-  email: "superadmin@abcindustries.com",
+  email: "superadmin@demo.com",
   role: "ADMIN",
   isActive: true,
   createdAt: "2018-04-01T09:00:00Z",
@@ -56,7 +56,7 @@ mockUsers.push({
 mockUsers.push({
   id: "u-a-1",
   name: "Admin User",
-  email: "admin@abcindustries.com",
+  email: "admin@demo.com",
   role: "ADMIN",
   isActive: true,
   createdAt: "2018-04-10T10:00:00Z",
@@ -66,7 +66,7 @@ mockUsers.push({
 mockUsers.push({
   id: "u-a-2",
   name: "Vikram Aditya",
-  email: "admin2@abcindustries.com",
+  email: "admin2@demo.com",
   role: "ADMIN",
   isActive: true,
   createdAt: "2019-01-15T09:30:00Z",
@@ -76,7 +76,7 @@ mockUsers.push({
 mockUsers.push({
   id: "u-m-1",
   name: "Manager User",
-  email: "manager@abcindustries.com",
+  email: "manager@demo.com",
   role: "MANAGER",
   isActive: true,
   createdAt: "2018-05-01T09:00:00Z",
@@ -90,7 +90,7 @@ for (let i = 2; i <= 5; i++) {
   mockUsers.push({
     id: `u-m-${i}`,
     name: `${fName} ${lName}`,
-    email: `${fName.toLowerCase()}.${lName.toLowerCase()}@abcindustries.com`,
+    email: `${fName.toLowerCase()}.${lName.toLowerCase()}@demo.com`,
     role: "MANAGER",
     isActive: true,
     createdAt: `2019-06-12T10:00:00Z`,
@@ -102,7 +102,7 @@ for (let i = 2; i <= 5; i++) {
 mockUsers.push({
   id: "u-e-1",
   name: "Employee User",
-  email: "employee@abcindustries.com",
+  email: "employee@demo.com",
   role: "EMPLOYEE",
   isActive: true,
   createdAt: "2018-06-01T09:00:00Z",
@@ -116,7 +116,7 @@ for (let i = 2; i <= 15; i++) {
   mockUsers.push({
     id: `u-e-${i}`,
     name: `${fName} ${lName}`,
-    email: `${fName.toLowerCase()}.${lName.toLowerCase()}@abcindustries.com`,
+    email: `${fName.toLowerCase()}.${lName.toLowerCase()}@demo.com`,
     role: "EMPLOYEE",
     isActive: i !== 15, // Make one employee inactive to test status display
     createdAt: `2020-02-18T11:00:00Z`,

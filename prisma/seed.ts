@@ -269,9 +269,9 @@ async function main() {
 
   console.log("✅ Database seeded successfully!");
   console.log("📧 Demo account access:");
-  console.log("   Admin:    admin@abcindustries.com / Admin@123");
-  console.log("   Manager:  manager@abcindustries.com / Manager@123");
-  console.log("   Employee: employee@abcindustries.com / Employee@123");
+  console.log("   Admin:    admin@demo.com / Admin@123");
+  console.log("   Manager:  manager@demo.com / Manager@123");
+  console.log("   Employee: employee@demo.com / Employee@123");
 }
 
 main()

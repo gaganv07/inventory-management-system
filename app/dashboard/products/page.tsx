@@ -7,13 +7,157 @@ import {
   Package, ChevronLeft, ChevronRight, Eye, RefreshCw,
   SortAsc, MoreVertical
 } from "lucide-react";
-import { mockProducts } from "@/lib/mock-data";
+import { mockProducts, mockTransactions } from "@/lib/mock-data";
 import { formatCurrency, getStockStatus, generateSKU } from "@/lib/utils";
 import type { Product, ProductStatus } from "@/types";
 import { toast } from "sonner";
 
 const STATUS_OPTIONS: ProductStatus[] = ["ACTIVE", "INACTIVE", "DISCONTINUED"];
 const PAGE_SIZE = 8;
+
+// Product Details Specifications Modal
+function ProductDetailsModal({
+  product, onClose
+}: {
+  product: Product;
+  onClose: () => void;
+}) {
+  const history = mockTransactions.filter(tx => tx.productId === product.id || tx.product?.id === product.id).slice(0, 5);
+  const location = product.description?.match(/[A-Z]-\w+-\w+-\w+/)?.[0] || "A-R12-S03-B05";
+  const supplier = product.supplier?.companyName || "Tata Steel Ltd";
+
+  const labelStyle = { fontSize: "10px", fontWeight: "600", color: "hsl(var(--text-muted))", textTransform: "uppercase" as const, letterSpacing: "0.05em" };
+  const valStyle = { fontSize: "14px", fontWeight: "600", color: "hsl(var(--text-primary))", marginTop: "2px" };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }}>
+      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+        className="w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden" style={{ background: "hsl(var(--surface))", border: "1px solid hsl(var(--border))", maxHeight: "90vh", overflowY: "auto" }}>
+        
+        <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid hsl(var(--border))" }}>
+          <div>
+            <h2 className="font-bold text-lg" style={{ color: "hsl(var(--text-primary))" }}>Product Specifications</h2>
+            <p className="text-xs mt-0.5" style={{ color: "hsl(var(--text-muted))" }}>SKU: {product.sku}</p>
+          </div>
+          <button onClick={onClose} className="p-2 rounded-lg transition-colors" style={{ background: "hsl(var(--surface-2))", color: "hsl(var(--text-muted))" }}>✕</button>
+        </div>
+
+        <div className="p-6 space-y-6">
+          {/* Header section with Image, Barcode, QR */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            {/* Image placeholder */}
+            <div className="aspect-square w-full rounded-xl flex flex-col items-center justify-center border border-dashed border-slate-700/60" style={{ background: "hsl(var(--surface-2))" }}>
+              <Package size={36} className="text-slate-500 mb-2" />
+              <span className="text-[10px] text-slate-500 font-semibold uppercase">Product Image</span>
+            </div>
+
+            {/* Barcode visual component */}
+            <div className="p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center" style={{ background: "hsl(var(--surface-2))" }}>
+              <div className="w-full h-12 flex items-center justify-between gap-[2px] bg-white px-3 py-2.5 rounded animate-pulse">
+                {[2,4,1,3,2,1,4,2,3,1,2,4,1,2,3,1,4,2,1,3,4,1,2].map((w, idx) => (
+                  <div key={idx} className="bg-black h-full" style={{ width: `${w}px` }} />
+                ))}
+              </div>
+              <span className="text-[10px] text-slate-500 font-mono mt-2">{product.barcode || "987654321012"}</span>
+              <span className="text-[9px] text-slate-500 font-semibold uppercase mt-0.5">Linear Barcode (128)</span>
+            </div>
+
+            {/* QR Code visual component */}
+            <div className="p-4 rounded-xl border border-white/5 flex flex-col items-center justify-center" style={{ background: "hsl(var(--surface-2))" }}>
+              <div className="w-12 h-12 bg-white p-1 rounded flex items-center justify-center">
+                <QrCode size={40} color="black" />
+              </div>
+              <span className="text-[10px] text-slate-500 font-mono mt-2">{product.sku}</span>
+              <span className="text-[9px] text-slate-500 font-semibold uppercase mt-0.5">Quick Scan QR</span>
+            </div>
+          </div>
+
+          <div className="border-t border-white/5 my-4" />
+
+          {/* Grid specifications */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <div style={labelStyle}>Product Name</div>
+              <div style={valStyle} className="truncate">{product.name}</div>
+            </div>
+            <div>
+              <div style={labelStyle}>Category</div>
+              <div style={valStyle}>{product.category?.name || "Uncategorized"}</div>
+            </div>
+            <div>
+              <div style={labelStyle}>Supplier SPOC</div>
+              <div style={valStyle} className="truncate">{supplier}</div>
+            </div>
+            <div>
+              <div style={labelStyle}>Warehouse Location</div>
+              <div style={valStyle} className="font-mono">{location}</div>
+            </div>
+
+            <div>
+              <div style={labelStyle}>Purchase Price</div>
+              <div style={valStyle} className="text-indigo-400">{formatCurrency(product.purchasePrice)}</div>
+            </div>
+            <div>
+              <div style={labelStyle}>Selling Price</div>
+              <div style={valStyle} className="text-emerald-400">{formatCurrency(product.sellingPrice)}</div>
+            </div>
+            <div>
+              <div style={labelStyle}>Current Stock</div>
+              <div style={valStyle}>{product.quantity} {product.unit}</div>
+            </div>
+            <div>
+              <div style={labelStyle}>Last Updated</div>
+              <div style={valStyle} className="text-[12px]">{new Date(product.updatedAt).toLocaleDateString("en-IN")}</div>
+            </div>
+          </div>
+
+          <div className="border-t border-white/5 my-4" />
+
+          {/* Stock Movement History */}
+          <div>
+            <h4 className="font-bold text-xs uppercase tracking-wider text-slate-400 mb-3">Recent Stock Transactions</h4>
+            {history.length === 0 ? (
+              <div className="p-4 rounded-xl border border-white/5 text-center text-xs text-slate-500" style={{ background: "hsl(var(--surface-2))" }}>
+                No recorded movement history logs for this product.
+              </div>
+            ) : (
+              <div className="overflow-hidden rounded-xl border border-white/5" style={{ background: "hsl(var(--surface-2))" }}>
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="bg-white/5 text-slate-400">
+                      <th className="p-2.5 font-semibold">Date</th>
+                      <th className="p-2.5 font-semibold">Type</th>
+                      <th className="p-2.5 font-semibold">Quantity</th>
+                      <th className="p-2.5 font-semibold">Supplier/Customer</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5 text-slate-300">
+                    {history.map((tx, idx) => (
+                      <tr key={idx}>
+                        <td className="p-2.5 font-mono">{new Date(tx.date).toLocaleDateString("en-IN")}</td>
+                        <td className="p-2.5">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-semibold ${tx.type === "IN" ? "text-emerald-400 bg-emerald-500/10" : "text-rose-400 bg-rose-500/10"}`}>
+                            {tx.type === "IN" ? "RECEIPT" : "DISPATCH"}
+                          </span>
+                        </td>
+                        <td className="p-2.5 font-bold">{tx.quantity} {product.unit}</td>
+                        <td className="p-2.5 truncate max-w-[150px]">{tx.supplier?.companyName || tx.customerId || "Internal Adjustment"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex gap-3 p-6 border-t border-white/5 bg-white/[0.01]">
+          <button type="button" onClick={onClose} className="btn btn-secondary w-full">Close Specifications View</button>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 // Product Form Modal
 function ProductModal({
@@ -163,6 +307,7 @@ export default function ProductsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [deleteModal, setDeleteModal] = useState<Product | null>(null);
+  const [viewProduct, setViewProduct] = useState<Product | null>(null);
 
   const filtered = useMemo(() => {
     return products.filter(p => {
@@ -302,8 +447,8 @@ export default function ProductsPage() {
                     </td>
                     <td>
                       <div className="flex items-center gap-1.5 justify-end">
-                        <button onClick={() => toast.info(`QR Code for ${product.sku}`)} className="p-1.5 rounded-lg transition-colors" style={{ color: "hsl(var(--text-muted))", background: "hsl(var(--surface-2))" }} title="View QR">
-                          <QrCode size={14} />
+                        <button onClick={() => setViewProduct(product)} className="p-1.5 rounded-lg transition-colors" style={{ color: "hsl(var(--text-secondary))", background: "hsl(var(--surface-2))" }} title="View Details">
+                          <Eye size={14} />
                         </button>
                         <button onClick={() => { setEditProduct(product); setModalOpen(true); }} className="p-1.5 rounded-lg transition-colors" style={{ color: "#6366f1", background: "rgba(99,102,241,0.1)" }} title="Edit">
                           <Edit size={14} />
@@ -349,6 +494,12 @@ export default function ProductsPage() {
 
       {/* Modals */}
       <AnimatePresence>
+        {viewProduct && (
+          <ProductDetailsModal
+            product={viewProduct}
+            onClose={() => setViewProduct(null)}
+          />
+        )}
         {modalOpen && (
           <ProductModal
             product={editProduct}

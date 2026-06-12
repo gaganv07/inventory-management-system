@@ -35,6 +35,37 @@ export default function ReportsPage() {
 
   return (
     <div className="space-y-6">
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media print {
+          body {
+            background: white !important;
+            color: black !important;
+          }
+          header, nav, aside, button, .no-print, .btn, select, input, [role="navigation"], .sidebar {
+            display: none !important;
+          }
+          .card {
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            color: black !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          table {
+            color: black !important;
+            border-collapse: collapse !important;
+            width: 100% !important;
+          }
+          th, td {
+            color: black !important;
+            border: 1px solid #ddd !important;
+            padding: 8px !important;
+          }
+        }
+      `}} />
+
       <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
         <div>
           <h2 className="text-xl font-bold" style={{ color: "hsl(var(--text-primary))" }}>Reports</h2>
@@ -46,6 +77,9 @@ export default function ReportsPage() {
               <Download size={14} /> {fmt}
             </button>
           ))}
+          <button onClick={() => window.print()} className="btn btn-primary" style={{ fontSize: "13px", padding: "7px 14px", background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
+            Print Report
+          </button>
         </div>
       </div>
 

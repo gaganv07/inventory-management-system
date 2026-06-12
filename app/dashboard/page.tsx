@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Package, Tag, Truck, DollarSign, TrendingUp, TrendingDown,
   AlertTriangle, Activity, ArrowUpRight, ArrowDownRight,
-  RefreshCw
+  RefreshCw, FileText, Settings
 } from "lucide-react";
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -19,30 +19,39 @@ import { AnimatedCounter } from "@/components/shared/AnimatedCounter";
 
 // KPI Card Component
 function KPICard({
-  title, value, subtitle, icon, trend, trendValue, color, delay = 0
+  title, value, subtitle, icon, trend, trendValue, color, delay = 0, isCurrency = false, isPercent = false
 }: {
   title: string; value: number; subtitle: string; icon: React.ReactNode;
   trend?: "up" | "down" | "neutral"; trendValue?: string; color: string; delay?: number;
+  isCurrency?: boolean; isPercent?: boolean;
 }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay, duration: 0.4 }}
-      className="stat-card">
-      <div className="flex items-start justify-between mb-4">
-        <div className="feature-icon-wrap" style={{ background: `${color}18`, color }}>
-          {icon}
-        </div>
-        {trend && (
-          <div className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${trend === "up" ? "text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950" : trend === "down" ? "text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-950" : "text-slate-500 bg-slate-50"}`}>
-            {trend === "up" ? <ArrowUpRight size={12} /> : trend === "down" ? <ArrowDownRight size={12} /> : null}
-            {trendValue}
+      className="stat-card flex flex-col justify-between h-full">
+      <div>
+        <div className="flex items-start justify-between mb-3">
+          <div className="feature-icon-wrap w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${color}18`, color }}>
+            {icon}
           </div>
-        )}
+          {trend && (
+            <div className={`flex items-center gap-0.5 text-[10px] font-medium px-1.5 py-0.5 rounded-full ${trend === "up" ? "text-emerald-600 bg-emerald-50 dark:text-emerald-400 dark:bg-emerald-950/50" : trend === "down" ? "text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-950/50" : "text-slate-500 bg-slate-50 dark:text-slate-400 dark:bg-slate-800"}`}>
+              {trend === "up" ? <ArrowUpRight size={10} /> : trend === "down" ? <ArrowDownRight size={10} /> : null}
+              {trendValue}
+            </div>
+          )}
+        </div>
+        <div className="text-xl font-bold mb-1 tracking-tight" style={{ color: "hsl(var(--text-primary))" }}>
+          {isCurrency ? (
+            <>₹{value.toLocaleString("en-IN")}</>
+          ) : isPercent ? (
+            <>{value}%</>
+          ) : (
+            value.toLocaleString("en-IN")
+          )}
+        </div>
+        <div className="text-xs font-semibold mb-0.5" style={{ color: "hsl(var(--text-primary))" }}>{title}</div>
       </div>
-      <div className="text-2xl font-bold mb-1" style={{ color: "hsl(var(--text-primary))" }}>
-        <AnimatedCounter end={value} />
-      </div>
-      <div className="text-sm font-medium mb-0.5" style={{ color: "hsl(var(--text-primary))" }}>{title}</div>
-      <div className="text-xs" style={{ color: "hsl(var(--text-muted))" }}>{subtitle}</div>
+      <div className="text-[10px] leading-normal mt-1" style={{ color: "hsl(var(--text-muted))" }}>{subtitle}</div>
     </motion.div>
   );
 }
@@ -145,14 +154,16 @@ export default function DashboardPage() {
   const stats = mockDashboardStats;
 
   const kpiCards = [
-    { title: "Total Products", value: stats.totalProducts, subtitle: "Across all categories", icon: <Package size={22} />, trend: "up" as const, trendValue: "+12 this month", color: "#6366f1", delay: 0 },
-    { title: "Total Categories", value: stats.totalCategories, subtitle: "Product categories", icon: <Tag size={22} />, trend: "neutral" as const, color: "#8b5cf6", delay: 0.05 },
-    { title: "Active Suppliers", value: stats.totalSuppliers, subtitle: "Verified suppliers", icon: <Truck size={22} />, trend: "up" as const, trendValue: "+2 this month", color: "#ec4899", delay: 0.1 },
-    { title: "Stock Value", value: Math.round(stats.totalStockValue / 100000), subtitle: "Lakhs — total inventory value", icon: <DollarSign size={22} />, trend: "up" as const, trendValue: "+5.8%", color: "#22c55e", delay: 0.15 },
-    { title: "Stock In Today", value: stats.todayStockIn, subtitle: "Units received today", icon: <TrendingUp size={22} />, color: "#14b8a6", delay: 0.2 },
-    { title: "Stock Out Today", value: stats.todayStockOut, subtitle: "Units dispatched today", icon: <TrendingDown size={22} />, color: "#f97316", delay: 0.25 },
-    { title: "Low Stock Items", value: stats.lowStockCount, subtitle: "Require immediate reorder", icon: <AlertTriangle size={22} />, trend: "down" as const, trendValue: "Action needed", color: "#ef4444", delay: 0.3 },
-    { title: "Transactions", value: 247, subtitle: "This month total", icon: <Activity size={22} />, trend: "up" as const, trendValue: "+18%", color: "#3b82f6", delay: 0.35 },
+    { title: "Inventory Value", value: stats.totalStockValue, isCurrency: true, subtitle: "Total valuation of stock", icon: <DollarSign size={18} />, trend: "up" as const, trendValue: "+5.8%", color: "#22c55e", delay: 0 },
+    { title: "Today's Dispatch", value: stats.todayStockOut, subtitle: "Stock out transactions today", icon: <TrendingDown size={18} />, trend: "up" as const, trendValue: "+12%", color: "#f97316", delay: 0.05 },
+    { title: "Today's Receipts", value: stats.todayStockIn, subtitle: "Stock in transactions today", icon: <TrendingUp size={18} />, trend: "up" as const, trendValue: "+15%", color: "#14b8a6", delay: 0.1 },
+    { title: "Pending POs", value: 23, subtitle: "POs awaiting approval", icon: <FileText size={18} />, color: "#8b5cf6", delay: 0.15 },
+    { title: "Pending Deliveries", value: 5, subtitle: "Shipments in transit", icon: <Truck size={18} />, trend: "up" as const, trendValue: "Due", color: "#3b82f6", delay: 0.2 },
+    { title: "Monthly Revenue", value: 4275000, isCurrency: true, subtitle: "Sales volume (Illustrative)", icon: <Activity size={18} />, trend: "up" as const, trendValue: "+14.2%", color: "#6366f1", delay: 0.25 },
+    { title: "Monthly Purchases", value: 2980000, isCurrency: true, subtitle: "Procurement value (Illustrative)", icon: <Package size={18} />, trend: "up" as const, trendValue: "+8.5%", color: "#ec4899", delay: 0.3 },
+    { title: "Warehouse Util.", value: 78, isPercent: true, subtitle: "Capacity layout usage", icon: <Settings size={18} />, color: "#a855f7", delay: 0.35 },
+    { title: "Low Stock Alerts", value: stats.lowStockCount, subtitle: "Products below reorder limit", icon: <AlertTriangle size={18} />, trend: "down" as const, trendValue: "Action", color: "#eab308", delay: 0.4 },
+    { title: "Out of Stock Items", value: 20, subtitle: "Products with zero stock", icon: <AlertTriangle size={18} />, trend: "down" as const, trendValue: "Critical", color: "#ef4444", delay: 0.45 }
   ];
 
   return (
@@ -169,7 +180,7 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {kpiCards.map((card) => (
           <KPICard key={card.title} {...card} />
         ))}
