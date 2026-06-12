@@ -210,7 +210,7 @@ function Header({ onMobileMenuOpen, collapsed }: HeaderProps) {
         {/* Breadcrumb / Page title */}
         <div>
           <h1 className="font-semibold text-base" style={{ color: "hsl(var(--text-primary))" }}>{title}</h1>
-          <p className="text-xs" style={{ color: "hsl(var(--text-muted))" }}>
+          <p className="text-xs hidden sm:block" style={{ color: "hsl(var(--text-muted))" }}>
             {new Date().toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
           </p>
         </div>

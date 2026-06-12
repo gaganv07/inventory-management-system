@@ -113,14 +113,14 @@ export default function SuppliersPage() {
                 <button onClick={() => setModalOpen(false)} className="p-2 rounded-lg" style={{ background: "hsl(var(--surface-2))", color: "hsl(var(--text-muted))" }}>✕</button>
               </div>
               <form onSubmit={handleSave} className="p-6 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2"><label style={labelStyle}>Company Name *</label><input style={inputStyle} required value={form.companyName} onChange={e => setForm({ ...form, companyName: e.target.value })} /></div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2"><label style={labelStyle}>Company Name *</label><input style={inputStyle} required value={form.companyName} onChange={e => setForm({ ...form, companyName: e.target.value })} /></div>
                   <div><label style={labelStyle}>Contact Person *</label><input style={inputStyle} required value={form.contactPerson} onChange={e => setForm({ ...form, contactPerson: e.target.value })} /></div>
                   <div><label style={labelStyle}>Phone *</label><input style={inputStyle} required value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
                   <div><label style={labelStyle}>Email</label><input type="email" style={inputStyle} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
                   <div><label style={labelStyle}>GST Number</label><input style={inputStyle} value={form.gstNumber} onChange={e => setForm({ ...form, gstNumber: e.target.value })} /></div>
-                  <div className="col-span-2"><label style={labelStyle}>Address</label><textarea style={{ ...inputStyle, resize: "vertical", minHeight: "60px" }} value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} /></div>
-                  <div className="col-span-2"><label style={labelStyle}>Notes</label><textarea style={{ ...inputStyle, resize: "vertical", minHeight: "60px" }} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} /></div>
+                  <div className="sm:col-span-2"><label style={labelStyle}>Address</label><textarea style={{ ...inputStyle, resize: "vertical", minHeight: "60px" }} value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} /></div>
+                  <div className="sm:col-span-2"><label style={labelStyle}>Notes</label><textarea style={{ ...inputStyle, resize: "vertical", minHeight: "60px" }} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} /></div>
                 </div>
                 <div className="flex gap-3 pt-2">
                   <button type="button" onClick={() => setModalOpen(false)} className="btn btn-secondary flex-1">Cancel</button>

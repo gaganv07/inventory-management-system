@@ -80,7 +80,7 @@ export default function ProfilePage() {
 
       {tab === "profile" && (
         <motion.form initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} onSubmit={handleProfileSave} className="card p-6 space-y-5">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label style={labelStyle}>Full Name</label>
               <input style={inputStyle} value={profile.name} onChange={e => setProfile({ ...profile, name: e.target.value })} />
@@ -97,7 +97,7 @@ export default function ProfilePage() {
               <label style={labelStyle}>Company</label>
               <input style={inputStyle} value={profile.company} onChange={e => setProfile({ ...profile, company: e.target.value })} />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 sm:col-span-2">
               <label style={labelStyle}>Bio</label>
               <textarea style={{ ...inputStyle, resize: "vertical", minHeight: "80px" }} value={profile.bio} onChange={e => setProfile({ ...profile, bio: e.target.value })} />
             </div>

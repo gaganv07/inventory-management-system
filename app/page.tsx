@@ -97,7 +97,7 @@ function Hero() {
               Enterprise Inventory Management
             </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6" style={{ color: "white" }}>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6" style={{ color: "white" }}>
               Smart Inventory<br />
               <span style={{ background: "linear-gradient(135deg, #6366f1, #a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 for Modern Industries

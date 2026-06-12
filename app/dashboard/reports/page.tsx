@@ -40,7 +40,7 @@ export default function ReportsPage() {
           <h2 className="text-xl font-bold" style={{ color: "hsl(var(--text-primary))" }}>Reports</h2>
           <p className="text-sm" style={{ color: "hsl(var(--text-muted))" }}>Generate and export inventory reports</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {["PDF", "Excel", "CSV"].map(fmt => (
             <button key={fmt} onClick={() => handleExport(fmt)} className="btn btn-secondary" style={{ fontSize: "13px", padding: "7px 14px" }}>
               <Download size={14} /> {fmt}

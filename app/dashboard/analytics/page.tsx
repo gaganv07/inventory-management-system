@@ -67,7 +67,7 @@ export default function AnalyticsPage() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="card p-6">
           <h3 className="font-semibold mb-1" style={{ color: "hsl(var(--text-primary))" }}>Category Distribution</h3>
           <p className="text-xs mb-5" style={{ color: "hsl(var(--text-muted))" }}>Products split by category</p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-6">
             <ResponsiveContainer width={160} height={160}>
               <RechartsPie>
                 <Pie data={mockCategoryDistribution} cx="50%" cy="50%" innerRadius={45} outerRadius={75} paddingAngle={3} dataKey="value">

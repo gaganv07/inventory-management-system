@@ -44,21 +44,21 @@ export default function ForgotPasswordPage() {
               </div>
 
               <form onSubmit={handleSubmit} style={{ display: "block" }}>
-                <div style={{ display: "block", marginBottom: "20px" }}>
-                  <label className="block text-sm font-medium mb-2" style={{ color: "rgba(255,255,255,0.7)", display: "block", marginBottom: "8px" }}>Email Address</label>
-                  <div className="relative">
-                    <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "rgba(255,255,255,0.3)" }} />
+                <div style={{ display: "block", marginBottom: "24px" }}>
+                  <label className="block text-sm font-medium mb-2" style={{ color: "rgba(255,255,255,0.7)", display: "block", marginBottom: "8px", fontSize: "14px", fontWeight: "500" }}>Email Address</label>
+                  <div className="relative" style={{ position: "relative" }}>
+                    <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.3)" }} />
                     <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
                       placeholder="you@company.com"
                       className="w-full pl-10 pr-4 py-3 rounded-xl text-sm text-white outline-none transition-all"
-                      style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
+                      style={{ width: "100%", paddingLeft: "40px", paddingRight: "16px", paddingTop: "12px", paddingBottom: "12px", borderRadius: "12px", fontSize: "14px", color: "white", outline: "none", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
                       onFocus={e => { e.target.style.borderColor = "#6366f1"; e.target.style.boxShadow = "0 0 0 3px rgba(99,102,241,0.15)"; }}
                       onBlur={e => { e.target.style.borderColor = "rgba(255,255,255,0.1)"; e.target.style.boxShadow = "none"; }} />
                   </div>
                 </div>
 
                 <button type="submit" disabled={loading} className="w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all disabled:opacity-70"
-                  style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)", boxShadow: "0 8px 30px rgba(99,102,241,0.35)", cursor: "pointer" }}>
+                  style={{ width: "100%", paddingTop: "14px", paddingBottom: "14px", borderRadius: "12px", fontSize: "16px", fontWeight: "600", color: "white", background: "linear-gradient(135deg, #6366f1, #8b5cf6)", boxShadow: "0 8px 30px rgba(99,102,241,0.35)", cursor: "pointer", border: "none" }}>
                   {loading ? <><Loader2 size={18} className="animate-spin" /> Sending...</> : "Send Reset Link →"}
                 </button>
               </form>

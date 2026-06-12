@@ -64,7 +64,7 @@ export default function UsersPage() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {(["ADMIN", "MANAGER", "EMPLOYEE"] as Role[]).map(role => {
           const count = users.filter(u => u.role === role).length;
           const conf = ROLE_CONFIG[role];

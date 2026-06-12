@@ -44,7 +44,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold" style={{ color: "hsl(var(--text-primary))" }}>Categories</h2>
           <p className="text-sm" style={{ color: "hsl(var(--text-muted))" }}>{categories.length} categories</p>
